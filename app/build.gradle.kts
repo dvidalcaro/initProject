@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.picocli)
+    annotationProcessor(libs.picocli.codegen)
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
 
@@ -31,6 +33,9 @@ application {
     mainClass = "com.initProject.InitProject.InitProject"
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-Aproject=${project.group}/${project.name}")
+}
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
