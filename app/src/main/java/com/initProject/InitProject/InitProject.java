@@ -1,13 +1,76 @@
 package com.initProject.InitProject;
 
-import org.example.App;
+import createProject.CreateProject;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
 
-public class InitProject {
-    public String getGreeting() {
-        return "Hello World gradle!";
+import java.util.concurrent.Callable;
+
+import static picocli.CommandLine.Option;
+
+@Command(
+        name = "InitProject",
+        mixinStandardHelpOptions = true,
+        version = "0.0.1",
+        description = "Initialize your project according to the following folder structure by file type, module-based or by functionality"
+
+)
+public class InitProject implements Callable<Integer> {
+    private String [] archives= {"components", "styles", "scrips", "images", "fonts", "utils", "pages"};
+    private String [] functions={"auth", "home", "cart", "products", "orders"};
+    private String [] modules={"cart", "product"};
+    private String [] moduleFolder= {"components", "services", "utils", "styles"};
+
+    @Option(names = {"-c", "--create" },
+    paramLabel = "name",
+    required = true,
+    description = "Create the project folder structures")
+    private String name;
+    @Option(names = {"-a", "--archive" },
+    description = "Create the project for Archive")
+    private Boolean archive;
+    @Option(names = {"-f", "--functions" },
+    description = "Create the project for functionality")
+    private Boolean functionality;
+    @Option(names = {"-m", "--modules" },
+    description = "Create the project for modules")
+    private Boolean module;
+    @Override
+    public Integer call() throws Exception {
+
+        CreateProject init= new CreateProject();
+
+        if (archive){
+            init.projectArchive(name, archives);
+            return 0;
+        }
+
+
+        if (functionality){
+            init.projectFunctions(name, functions);
+
+        }
+
+        if (module){
+            init.projectModule(name, modules, moduleFolder);
+
+        }
+
+
+
+
+
+        return 0;
+
+
+
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        int exiCode = new CommandLine(new InitProject()).execute(args);
+        System.exit(exiCode);
+
     }
+
+
 }
