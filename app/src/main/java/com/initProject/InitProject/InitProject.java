@@ -27,12 +27,15 @@ public class InitProject implements Callable<Integer> {
     description = "Create the project folder structures")
     private String name;
     @Option(names = {"-a", "--archive" },
+            defaultValue = "false",
     description = "Create the project for Archive")
     private Boolean archive;
     @Option(names = {"-f", "--functions" },
+            defaultValue = "false",
     description = "Create the project for functionality")
     private Boolean functionality;
     @Option(names = {"-m", "--modules" },
+            defaultValue = "false",
     description = "Create the project for modules")
     private Boolean module;
     @Override
@@ -40,20 +43,19 @@ public class InitProject implements Callable<Integer> {
 
         CreateProject init= new CreateProject();
 
+
+
         if (archive){
             init.projectArchive(name, archives);
             return 0;
-        }
-
-
-        if (functionality){
+        }else if (functionality){
             init.projectFunctions(name, functions);
 
-        }
-
-        if (module){
+        }else  if (module){
             init.projectModule(name, modules, moduleFolder);
 
+        }else{
+            System.out.println("Error no selected options validate");
         }
 
 
